@@ -1,9 +1,11 @@
 package augustxun.rpc.proxy;
 
+import augustxun.rpc.RpcApplication;
 import augustxun.rpc.model.RpcRequest;
 import augustxun.rpc.model.RpcResponse;
 import augustxun.rpc.serializer.JdkSerializer;
 import augustxun.rpc.serializer.Serializer;
+import augustxun.rpc.serializer.SerializerFactory;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 
@@ -18,8 +20,7 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 指定序列化器
-        Serializer serializer = new JdkSerializer();
-
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
         // 构造请求
         RpcRequest rpcRequest = RpcRequest.builder()
                 .serviceName(method.getDeclaringClass().getName())

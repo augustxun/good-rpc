@@ -1,1 +1,3 @@
-augustxun.rpc.serializer.JdkSerializer
+jdk=augustxun.rpc.serializer.JdkSerializer
+hessian=augustxun.rpc.serializer.HessianSerializer
+kryo=augustxun.rpc.serializer.KryoSerializer

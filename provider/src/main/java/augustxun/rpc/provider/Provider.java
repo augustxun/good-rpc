@@ -16,7 +16,7 @@ public class Provider {
         LocalRegistry.register(UserService.class.getName(), UserServiceImpl.class);
 
         // 启动 Web 服务
-        HttpServer httpServer=new VertxHttpServer();
+        HttpServer httpServer = new VertxHttpServer();
         httpServer.doStart(RpcApplication.getRpcConfig().getServerPort());
     }
 }

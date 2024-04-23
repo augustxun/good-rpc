@@ -1,10 +1,12 @@
 package augustxun.rpc.server;
 
+import augustxun.rpc.RpcApplication;
 import augustxun.rpc.model.RpcRequest;
 import augustxun.rpc.model.RpcResponse;
 import augustxun.rpc.registry.LocalRegistry;
 import augustxun.rpc.serializer.JdkSerializer;
 import augustxun.rpc.serializer.Serializer;
+import augustxun.rpc.serializer.SerializerFactory;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServerRequest;
@@ -21,7 +23,7 @@ public class HttpServerHandler implements Handler<HttpServerRequest> {
     @Override
     public void handle(HttpServerRequest httpServerRequest) {
         // 指定序列化器
-        final Serializer serializer = new JdkSerializer();
+        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
 
         // 记录日志
         System.out.println("Received request:" + httpServerRequest.method() + " " + httpServerRequest.uri());

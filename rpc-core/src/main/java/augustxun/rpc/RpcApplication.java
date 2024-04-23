@@ -38,8 +38,8 @@ public class RpcApplication {
      */
     public static RpcConfig getRpcConfig() {
         if (config == null) {
-            synchronized (RpcApplication.class){
-                if(config==null) {
+            synchronized (RpcApplication.class) {
+                if (config == null) {
                     init();
                 }
             }
