@@ -63,15 +63,15 @@ public class RegistryTest {
         serviceMetaInfo.setServiceName("myService");
         serviceMetaInfo.setServiceVersion("1.0");
         String serviceKey = serviceMetaInfo.getServiceKey();
-        List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceKey);
+        List<ServiceMetaInfo> serviceMetaInfoList = registry.discovery(serviceKey);
         Assert.assertNotNull(serviceMetaInfoList);
     }
 
     @Test
     public void heartBeat() throws Exception {
-        // init 方法中已经执行心跳检测了
+        // init方法中已经执行心跳检测了
         register();
-        // 阻塞 1 分钟
+        // 阻塞1分钟
         Thread.sleep(60 * 1000L);
     }
 }

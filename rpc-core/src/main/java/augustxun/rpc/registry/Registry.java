@@ -26,19 +26,27 @@ public interface Registry {
     void unRegister(ServiceMetaInfo serviceMetaInfo);
 
     /**
+     * 心跳检测（服务端）
+     */
+    void heartBeat();
+
+    /**
      * 服务发现（获取某服务的所有节点，消费端）
      * @param serviceKey 服务键名
      * @return
      */
-    List<ServiceMetaInfo> serviceDiscovery(String serviceKey);
+    List<ServiceMetaInfo> discovery(String serviceKey);
+
+    /**
+     * 监听（消费端）
+     * @param serviceNodeKey
+     */
+    void watch(String serviceNodeKey);
 
     /**
      * 服务销毁
      */
     void destroy();
 
-    /**
-     * 心跳检测（服务端）
-     */
-    void heartBeat();
+
 }

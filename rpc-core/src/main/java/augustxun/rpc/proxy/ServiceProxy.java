@@ -8,7 +8,6 @@ import augustxun.rpc.model.RpcResponse;
 import augustxun.rpc.model.ServiceMetaInfo;
 import augustxun.rpc.registry.Registry;
 import augustxun.rpc.registry.RegistryFactory;
-import augustxun.rpc.serializer.JdkSerializer;
 import augustxun.rpc.serializer.Serializer;
 import augustxun.rpc.serializer.SerializerFactory;
 import cn.hutool.core.collection.CollUtil;
@@ -51,7 +50,7 @@ public class ServiceProxy implements InvocationHandler {
             ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
             serviceMetaInfo.setServiceName(serviceName);
             serviceMetaInfo.setServiceVersion(RpcConstant.DEFAULT_SERVICE_VERSION);
-            List<ServiceMetaInfo> serviceMetaInfoList = registry.serviceDiscovery(serviceMetaInfo.getServiceKey());
+            List<ServiceMetaInfo> serviceMetaInfoList = registry.discovery(serviceMetaInfo.getServiceKey());
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
