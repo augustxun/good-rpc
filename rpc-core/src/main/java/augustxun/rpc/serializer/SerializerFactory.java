@@ -9,8 +9,8 @@ import java.util.Map;
  * 序列化器工厂
  */
 public class SerializerFactory {
-    /**
-     * 序列化映射（实现单例）
+    /*
+      序列化映射（实现单例）
      */
     static {
         SpiLoader.load(Serializer.class);

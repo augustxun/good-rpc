@@ -1,7 +1,10 @@
 package augustxun.rpc;
 
+import augustxun.rpc.config.RegistryConfig;
 import augustxun.rpc.config.RpcConfig;
 import augustxun.rpc.constant.RpcConstant;
+import augustxun.rpc.registry.Registry;
+import augustxun.rpc.registry.RegistryFactory;
 import augustxun.rpc.utils.ConfigUtils;
 import lombok.extern.slf4j.Slf4j;
 
@@ -11,11 +14,16 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class RpcApplication {
-    private static volatile RpcConfig config;
+    private static volatile RpcConfig rpcConfig;
 
     public static void init(RpcConfig newRpcConfig) {
-        config = newRpcConfig;
+        rpcConfig = newRpcConfig;
         log.info("rpc init, config={}", new RpcConfig().toString());
+        // 注册中心初始化
+        RegistryConfig registryConfig = rpcConfig.getRegistryConfig();
+        Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
+        registry.init(registryConfig);
+        log.info("registry init, config={}", registryConfig);
     }
 
     /**
@@ -37,14 +45,14 @@ public class RpcApplication {
      * 懒加载机制
      */
     public static RpcConfig getRpcConfig() {
-        if (config == null) {
+        if (rpcConfig == null) {
             synchronized (RpcApplication.class) {
-                if (config == null) {
+                if (rpcConfig == null) {
                     init();
                 }
             }
         }
-        return config;
+        return rpcConfig;
     }
 
 }
