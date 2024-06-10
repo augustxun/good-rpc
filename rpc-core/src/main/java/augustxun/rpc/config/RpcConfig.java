@@ -1,5 +1,6 @@
 package augustxun.rpc.config;
 
+import augustxun.rpc.loadbalancer.LoadBalancerKeys;
 import augustxun.rpc.serializer.SerializerKeys;
 import lombok.Data;
 
@@ -24,17 +25,24 @@ public class RpcConfig {
      * 服务器端口号
      */
     private Integer serverPort = 8089;
-    /**
-     * 序列化器
-     */
-    private String serializer = SerializerKeys.JDK;
+
     /**
      * 模拟调用
      */
     private boolean mock = false;
 
     /**
-     * 注册中心配置
+     * 序列化器
+     */
+    private String serializer = SerializerKeys.JDK;
+
+    /**
+     * 负载均衡器
+     */
+    private String loadBalancer = LoadBalancerKeys.ROUND_ROBIN;
+
+    /**
+     * 注册中心
      */
     private RegistryConfig registryConfig = new RegistryConfig();
 }

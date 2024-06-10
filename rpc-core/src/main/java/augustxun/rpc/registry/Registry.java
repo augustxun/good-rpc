@@ -33,7 +33,6 @@ public interface Registry {
     /**
      * 服务发现（获取某服务的所有节点，消费端）
      * @param serviceKey 服务键名
-     * @return
      */
     List<ServiceMetaInfo> discovery(String serviceKey);
 
@@ -47,6 +46,4 @@ public interface Registry {
      * 服务销毁
      */
     void destroy();
-
-
 }

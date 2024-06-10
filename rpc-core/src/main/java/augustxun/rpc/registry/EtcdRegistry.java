@@ -24,6 +24,12 @@ public class EtcdRegistry implements Registry {
 
     private KV kvClient;
 
+
+    /**
+     * 根节点
+     */
+    private static final String ETCD_ROOT_PATH = "/rpc/";
+
     /**
      * 本机注册的节点key集合（用于维护续期）
      */
@@ -39,11 +45,6 @@ public class EtcdRegistry implements Registry {
      */
     private final Set<String> watchingKeySet = new ConcurrentHashSet<>();
 
-    /**
-     * 根节点
-     */
-    private static final String ETCD_ROOT_PATH = "/rpc/";
-
     @Override
     public void init(RegistryConfig registryConfig) {
         client = Client.builder()
@@ -58,15 +59,19 @@ public class EtcdRegistry implements Registry {
     public void register(ServiceMetaInfo serviceMetaInfo) throws Exception {
         // 创建Lease和KV客户端
         Lease leaseClient = client.getLeaseClient();
+
         // 创建一个30秒的租约
         long leaseId = leaseClient.grant(30).get().getID();
+
         // 设置要存储的键值对
         String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
         ByteSequence key = ByteSequence.from(registerKey, StandardCharsets.UTF_8);
         ByteSequence value = ByteSequence.from(JSONUtil.toJsonStr(serviceMetaInfo), StandardCharsets.UTF_8);
+
         // 将键值对与租约关联起来，并设置过期时间
         PutOption putOption = PutOption.builder().withLeaseId(leaseId).build();
         kvClient.put(key, value, putOption).get();
+
         // 添加节点信息到本地缓存
         localRegisterNodeKeySet.add(registerKey);
     }

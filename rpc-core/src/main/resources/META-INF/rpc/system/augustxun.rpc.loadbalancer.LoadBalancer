@@ -1,0 +1,3 @@
+roundRobin = augustxun.rpc.loadbalancer.RoundRobinLoadBalancer
+random = augustxun.rpc.loadbalancer.RandomLoadBalancer
+consistentHash = augustxun.rpc.loadbalancer.ConsistentHashLoadBalancer

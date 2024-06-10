@@ -1,2 +1,0 @@
-etcd=augustxun.rpc.registry.EtcdRegistry
-zookeeper=augustxun.rpc.registry.ZooKeeperRegistry

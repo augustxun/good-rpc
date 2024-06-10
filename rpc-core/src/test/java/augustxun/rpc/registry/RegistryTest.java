@@ -1,10 +1,7 @@
-package com.yupi.yurpc.registry;
+package augustxun.rpc.registry;
 
 import augustxun.rpc.config.RegistryConfig;
 import augustxun.rpc.model.ServiceMetaInfo;
-import augustxun.rpc.registry.EtcdRegistry;
-import augustxun.rpc.registry.Registry;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

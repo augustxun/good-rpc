@@ -1,5 +1,6 @@
 package augustxun.rpc.spi;
 
+import augustxun.rpc.registry.Registry;
 import augustxun.rpc.serializer.Serializer;
 import cn.hutool.core.io.resource.ResourceUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,15 +32,16 @@ public class SpiLoader {
     /**
      * 动态加载的类列表
      */
-    private static final List<Class<?>> LOAD_CLASS_LIST = Arrays.asList(Serializer.class);
+    private static final List<Class<?>> LOAD_CLASS_LIST = Arrays.asList(Serializer.class, Registry.class);
+
     /**
      * 存储已加载好的类: 接口名称 => (key => 实现类)
      */
-    private static Map<String, Map<String, Class<?>>> loaderMap = new ConcurrentHashMap<>();
+    private static final Map<String, Map<String, Class<?>>> loaderMap = new ConcurrentHashMap<>();
     /**
      * 对象实例缓存（避免重复 new） => 对象实例，单例模式
      */
-    private static Map<String, Object> instanceCache = new ConcurrentHashMap<>();
+    private static final Map<String, Object> instanceCache = new ConcurrentHashMap<>();
 
     /**
      * 加载所有类型
@@ -66,10 +68,11 @@ public class SpiLoader {
             throw new RuntimeException(String.format("SpiLoader 未加载 %s 类型", tClassName));
         }
         if (!keyClassMap.containsKey(key)) {
-            throw new RuntimeException(String.format("SpiLoader 的 %s 不存在 key=%s 的类型", tClassName, key));
+            throw new RuntimeException(String.format("SpiLoader 的 %s 不存在 key = %s 的类型", tClassName, key));
         }
         // 获取到要加载的实现类型
         Class<?> implClass = keyClassMap.get(key);
+
         // 从实例缓存中加载指定类型的实例
         String implClassName = implClass.getName();
         if (!instanceCache.containsKey(implClassName)) {
@@ -121,8 +124,10 @@ public class SpiLoader {
 
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         loadAll();
-        System.out.println(loaderMap);
-        Serializer serializer = getInstance(Serializer.class, "hessian");
-        System.out.println(serializer);
+//        System.out.println(loaderMap);
+//        Serializer serializer = getInstance(Serializer.class, "hessian");
+//        System.out.println(serializer);
+        Registry registry = getInstance(Registry.class, "etcd");
+        System.out.println(registry);
     }
 }
