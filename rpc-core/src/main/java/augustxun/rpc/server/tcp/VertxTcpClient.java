@@ -33,7 +33,7 @@ public class VertxTcpClient {
      * @throws ExecutionException
      */
     public static RpcResponse doRequest(RpcRequest rpcRequest, ServiceMetaInfo serviceMetaInfo) throws InterruptedException, ExecutionException {
-        // 发送 TCP 请求
+        // 发送TCP请求
         Vertx vertx = Vertx.vertx();
         NetClient netClient = vertx.createNetClient();
         CompletableFuture<RpcResponse> responseFuture = new CompletableFuture<>();

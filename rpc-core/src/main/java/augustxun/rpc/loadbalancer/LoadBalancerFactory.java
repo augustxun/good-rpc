@@ -12,7 +12,7 @@ public class LoadBalancerFactory {
     /**
      * 默认负载均衡器
      */
-    private static final LoadBalancer DEFAULT_LOAD_BALANCER = new RoundRobinLoadBalancer();
+//    private static final LoadBalancer DEFAULT_LOAD_BALANCER = new RoundRobinLoadBalancer();
 
     static {
         SpiLoader.load(LoadBalancer.class);

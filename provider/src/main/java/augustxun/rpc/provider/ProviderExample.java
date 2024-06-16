@@ -30,7 +30,8 @@ public class ProviderExample {
         Registry registry = RegistryFactory.getInstance(registryConfig.getRegistry());
         ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
         serviceMetaInfo.setServiceName(serviceName);
-        serviceMetaInfo.setServiceAddress(rpcConfig.getServerHost() + ":" + rpcConfig.getServerPort());
+        serviceMetaInfo.setServiceHost(rpcConfig.getServerHost());
+        serviceMetaInfo.setServicePort(rpcConfig.getServerPort());
         try {
             registry.register(serviceMetaInfo);
         } catch (Exception e) {

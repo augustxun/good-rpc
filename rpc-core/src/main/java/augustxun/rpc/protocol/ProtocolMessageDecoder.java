@@ -16,9 +16,7 @@ public class ProtocolMessageDecoder {
 
     /**
      * 解码
-     *
      * @param buffer
-     * @return
      * @throws IOException
      */
     public static ProtocolMessage<?> decode(Buffer buffer) throws IOException {

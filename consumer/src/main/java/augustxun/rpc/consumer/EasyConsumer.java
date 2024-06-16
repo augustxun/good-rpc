@@ -14,11 +14,10 @@ public class EasyConsumer {
         user.setName("augustxun");
         UserService userService = ServiceProxyFactory.getProxy(UserService.class);
         User newUser = userService.getUser(user);
-        if(newUser!=null) {
+        if (newUser != null) {
             System.out.println(newUser.getName());
-        }
-        else {
-            System.out.println(user==null);
+        } else {
+            System.out.println(user == null);
         }
     }
 }

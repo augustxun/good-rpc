@@ -25,7 +25,6 @@ import java.util.List;
 public class ServiceProxy implements InvocationHandler {
     /**
      * 调用代理
-     * @return
      * @throws Throwable
      */
     @Override

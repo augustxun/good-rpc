@@ -9,14 +9,9 @@ import java.util.stream.Collectors;
 
 /**
  * 协议消息的序列化器枚举
- *
- * @author <a href="https://github.com/liyupi">程序员鱼皮</a>
- * @from <a href="https://yupi.icu">编程导航学习圈</a>
- * @learn <a href="https://codefather.cn">鱼皮的编程宝典</a>
  */
 @Getter
 public enum ProtocolMessageSerializerEnum {
-
     JDK(0, "jdk"),
     JSON(1, "json"),
     KRYO(2, "kryo"),
@@ -33,18 +28,14 @@ public enum ProtocolMessageSerializerEnum {
 
     /**
      * 获取值列表
-     *
-     * @return
      */
     public static List<String> getValues() {
         return Arrays.stream(values()).map(item -> item.value).collect(Collectors.toList());
     }
 
     /**
-     * 根据 key 获取枚举
-     *
+     * 根据key获取枚举
      * @param key
-     * @return
      */
     public static ProtocolMessageSerializerEnum getEnumByKey(int key) {
         for (ProtocolMessageSerializerEnum anEnum : ProtocolMessageSerializerEnum.values()) {
@@ -57,10 +48,8 @@ public enum ProtocolMessageSerializerEnum {
 
 
     /**
-     * 根据 value 获取枚举
-     *
+     * 根据value获取枚举
      * @param value
-     * @return
      */
     public static ProtocolMessageSerializerEnum getEnumByValue(String value) {
         if (ObjectUtil.isEmpty(value)) {

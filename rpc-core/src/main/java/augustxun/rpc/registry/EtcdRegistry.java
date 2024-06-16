@@ -20,11 +20,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class EtcdRegistry implements Registry {
-    private Client client;
-
-    private KV kvClient;
-
-
     /**
      * 根节点
      */
@@ -45,6 +40,10 @@ public class EtcdRegistry implements Registry {
      */
     private final Set<String> watchingKeySet = new ConcurrentHashSet<>();
 
+    private Client client;
+
+    private KV kvClient;
+
     @Override
     public void init(RegistryConfig registryConfig) {
         client = Client.builder()
@@ -52,6 +51,7 @@ public class EtcdRegistry implements Registry {
                 .connectTimeout(Duration.ofMillis(registryConfig.getTimeout()))
                 .build();
         kvClient = client.getKVClient();
+        // 启动心跳检测机制
         heartBeat();
     }
 
@@ -78,23 +78,24 @@ public class EtcdRegistry implements Registry {
 
     @Override
     public void unRegister(ServiceMetaInfo serviceMetaInfo) {
+        // 从Etcd中删除这个key的数据
         String registerKey = ETCD_ROOT_PATH + serviceMetaInfo.getServiceNodeKey();
         kvClient.delete(ByteSequence.from(registerKey, StandardCharsets.UTF_8));
+
         // 也要从本地缓存移除节点
         localRegisterNodeKeySet.remove(registerKey);
     }
 
     @Override
     public List<ServiceMetaInfo> discovery(String serviceKey) {
-        // 优先从缓存获取服务
+        // 1.优先从缓存获取服务
         List<ServiceMetaInfo> cachedServiceMetaInfoList = registryServiceCache.readCache();
         if (cachedServiceMetaInfoList != null) {
             return cachedServiceMetaInfoList;
         }
 
-        // 前缀搜索，结尾一定要加'/'
+        // 2.根据key进行前缀搜索，结尾一定要加'/'
         String searchPrefix = ETCD_ROOT_PATH + serviceKey + "/";
-
         try {
             // 前缀查询
             GetOption getOption = GetOption.builder().isPrefix(true).build();
