@@ -1,0 +1,4 @@
+failBack = augustxun.rpc.fault.tolerant.FailBackTolerantStrategy
+failFast = augustxun.rpc.fault.tolerant.FailFastTolerantStrategy
+failOver = augustxun.rpc.fault.tolerant.FailOverTolerantStrategy
+failSafe = augustxun.rpc.fault.tolerant.FailSafeTolerantStrategy

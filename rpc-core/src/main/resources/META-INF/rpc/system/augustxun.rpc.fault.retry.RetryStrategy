@@ -1,0 +1,2 @@
+no = augustxun.rpc.fault.retry.NoRetryStrategy
+fixedInterval = augustxun.rpc.fault.retry.fixedIntervalRetryStrategy

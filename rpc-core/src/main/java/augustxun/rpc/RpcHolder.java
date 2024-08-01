@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
  * 相当于 holder，存放了项目全局用到的变量，双检验锁单例模式实现
  */
 @Slf4j
-public class RpcApplication {
+public class RpcHolder {
     private static volatile RpcConfig rpcConfig;
 
     public static void init(RpcConfig newRpcConfig) {
@@ -50,7 +50,7 @@ public class RpcApplication {
      */
     public static RpcConfig getRpcConfig() {
         if (rpcConfig == null) {
-            synchronized (RpcApplication.class) {
+            synchronized (RpcHolder.class) {
                 if (rpcConfig == null) {
                     init();
                 }

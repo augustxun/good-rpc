@@ -1,6 +1,6 @@
 package augustxun.rpc.server.tcp;
 
-import augustxun.rpc.RpcApplication;
+import augustxun.rpc.RpcHolder;
 import augustxun.rpc.model.RpcRequest;
 import augustxun.rpc.model.RpcResponse;
 import augustxun.rpc.model.ServiceMetaInfo;
@@ -50,7 +50,7 @@ public class VertxTcpClient {
                     ProtocolMessage.Header header = new ProtocolMessage.Header();
                     header.setMagic(ProtocolConstant.PROTOCOL_MAGIC);
                     header.setVersion(ProtocolConstant.PROTOCOL_VERSION);
-                    header.setSerializer((byte) ProtocolMessageSerializerEnum.getEnumByValue(RpcApplication.getRpcConfig().getSerializer()).getKey());
+                    header.setSerializer((byte) ProtocolMessageSerializerEnum.getEnumByValue(RpcHolder.getRpcConfig().getSerializer()).getKey());
                     header.setType((byte) ProtocolMessageTypeEnum.REQUEST.getKey());
                     // 生成全局请求 ID
                     header.setRequestId(IdUtil.getSnowflakeNextId());

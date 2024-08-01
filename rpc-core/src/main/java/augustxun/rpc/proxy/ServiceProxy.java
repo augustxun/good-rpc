@@ -1,8 +1,14 @@
 package augustxun.rpc.proxy;
 
-import augustxun.rpc.RpcApplication;
+import augustxun.rpc.RpcHolder;
 import augustxun.rpc.config.RpcConfig;
 import augustxun.rpc.constant.RpcConstant;
+import augustxun.rpc.fault.retry.RetryStrategy;
+import augustxun.rpc.fault.retry.RetryStrategyFactory;
+import augustxun.rpc.fault.tolerant.TolerantStrategy;
+import augustxun.rpc.fault.tolerant.TolerantStrategyFactory;
+import augustxun.rpc.loadbalancer.LoadBalancer;
+import augustxun.rpc.loadbalancer.LoadBalancerFactory;
 import augustxun.rpc.model.RpcRequest;
 import augustxun.rpc.model.RpcResponse;
 import augustxun.rpc.model.ServiceMetaInfo;
@@ -10,14 +16,14 @@ import augustxun.rpc.registry.Registry;
 import augustxun.rpc.registry.RegistryFactory;
 import augustxun.rpc.serializer.Serializer;
 import augustxun.rpc.serializer.SerializerFactory;
+import augustxun.rpc.server.tcp.VertxTcpClient;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.http.HttpRequest;
-import cn.hutool.http.HttpResponse;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 服务代理（JDK动态代理）
@@ -30,7 +36,7 @@ public class ServiceProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         // 指定序列化器
-        final Serializer serializer = SerializerFactory.getInstance(RpcApplication.getRpcConfig().getSerializer());
+        final Serializer serializer = SerializerFactory.getInstance(RpcHolder.getRpcConfig().getSerializer());
         // 构造请求
         String serviceName = method.getDeclaringClass().getName();
         RpcRequest rpcRequest = RpcRequest.builder()
@@ -39,12 +45,9 @@ public class ServiceProxy implements InvocationHandler {
                 .parameterTypes(method.getParameterTypes())
                 .args(args)
                 .build();
-        byte[] bodyBytes = new byte[0];
         try {
-            // 序列化
-            bodyBytes = serializer.serialize(rpcRequest);
             // 从注册中心获取服务提供者请求的地址
-            RpcConfig rpcConfig = RpcApplication.getRpcConfig();
+            RpcConfig rpcConfig = RpcHolder.getRpcConfig();
             Registry registry = RegistryFactory.getInstance(rpcConfig.getRegistryConfig().getRegistry());
             ServiceMetaInfo serviceMetaInfo = new ServiceMetaInfo();
             serviceMetaInfo.setServiceName(serviceName);
@@ -53,19 +56,30 @@ public class ServiceProxy implements InvocationHandler {
             if (CollUtil.isEmpty(serviceMetaInfoList)) {
                 throw new RuntimeException("暂无服务地址");
             }
-            ServiceMetaInfo selectedServiceMetaInfo = serviceMetaInfoList.get(0);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        // 发送请求
-        try (HttpResponse httpResponse = HttpRequest.post("localhost:8089").body(bodyBytes).execute()) {
-            byte[] result = httpResponse.bodyBytes();
-            // 反序列化
-            RpcResponse rpcResponse = serializer.deserialize(result, RpcResponse.class);
+            // 负载均衡
+            LoadBalancer loadBalancer = LoadBalancerFactory.getInstance(rpcConfig.getLoadBalancer());
+            // 将调用方法名（请求路径）作为负载均衡参数
+            Map<String, Object> requestParams = new HashMap<>();
+            requestParams.put("methodName", rpcRequest.getMethodName());
+            ServiceMetaInfo selectedServiceMetaInfo = loadBalancer.select(requestParams, serviceMetaInfoList);
+
+            // 发送rpc请求
+            RpcResponse rpcResponse = null;
+            try {
+                RetryStrategy retryStrategy = RetryStrategyFactory.getInstance(rpcConfig.getRetryStrategy());
+                rpcResponse = retryStrategy.doRetry(() ->
+                        VertxTcpClient.doRequest(rpcRequest, selectedServiceMetaInfo)
+                );
+            } catch (Exception e) {
+                // 容错机制
+                TolerantStrategy tolerantStrategy =
+                        TolerantStrategyFactory.getInstance(rpcConfig.getTolerantStrategy());
+                rpcResponse = tolerantStrategy.doTolerant(null, e);
+            }
+            // 使用重试机制
             return rpcResponse.getData();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            throw new RuntimeException("调用失败");
         }
-        return null;
     }
 }
