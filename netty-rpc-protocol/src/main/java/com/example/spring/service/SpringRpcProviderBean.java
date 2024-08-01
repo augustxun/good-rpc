@@ -14,11 +14,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.rmi.registry.Registry;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @Slf4j
 public class SpringRpcProviderBean implements InitializingBean, BeanPostProcessor {
 

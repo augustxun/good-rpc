@@ -3,11 +3,7 @@ package com.example.serial;
 import com.alibaba.fastjson.JSON;
 import com.example.constants.SerialType;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 public class JsonSerializer implements ISerializer{
     @Override
     public <T> byte[] serialize(T obj) {

@@ -17,11 +17,7 @@ import org.apache.curator.x.discovery.details.JsonInstanceSerializer;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @Slf4j
 public class ZookeeperRegistryService implements IRegistryService {
 

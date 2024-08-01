@@ -5,11 +5,7 @@ import lombok.Data;
 
 import java.io.Serializable;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @AllArgsConstructor
 @Data
 public class Header implements Serializable {

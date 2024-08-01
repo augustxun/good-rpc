@@ -9,11 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.net.UnknownHostException;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @Configuration
 @EnableConfigurationProperties(RpcServerProperties.class)
 public class RpcProviderAutoConfiguration {

@@ -13,11 +13,7 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 public class RpcServerHandler extends SimpleChannelInboundHandler<RpcProtocol<RpcRequest>> {
 
     @Override

@@ -7,11 +7,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 public class Mediator {
     public static Map<String,BeanMethod> beanMethodMap=new ConcurrentHashMap<>();
 

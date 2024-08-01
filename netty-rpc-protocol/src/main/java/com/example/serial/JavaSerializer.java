@@ -5,11 +5,7 @@ import com.example.constants.SerialType;
 
 import java.io.*;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 public class JavaSerializer implements ISerializer{
 
     @Override

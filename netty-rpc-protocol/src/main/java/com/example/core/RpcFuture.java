@@ -3,11 +3,7 @@ package com.example.core;
 import io.netty.util.concurrent.Promise;
 import lombok.Data;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @Data
 public class RpcFuture<T> {
     //Promise是可写的 Future, Future自身并没有写操作相关的接口,

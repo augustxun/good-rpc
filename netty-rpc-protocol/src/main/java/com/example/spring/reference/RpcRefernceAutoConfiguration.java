@@ -13,11 +13,7 @@ import org.springframework.core.env.Environment;
 
 import javax.annotation.Resource;
 
-/**
- * 咕泡学院，只为更好的你
- * 咕泡学院-Mic: 2082233439
- * http://www.gupaoedu.com
- **/
+
 @Configuration
 public class RpcRefernceAutoConfiguration implements EnvironmentAware{
 
