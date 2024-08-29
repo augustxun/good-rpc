@@ -30,8 +30,6 @@ public class VertxTcpServer implements HttpServer {
 //            String testMessage = "Hello, server!Hello, server!Hello, server!Hello, server!";
 //            int messageLength = testMessage.getBytes().length;
 
-
-
             // 构造parser
             RecordParser parser = RecordParser.newFixed(8);
             parser.setOutput(new Handler<Buffer>() {
@@ -63,7 +61,6 @@ public class VertxTcpServer implements HttpServer {
             });
             socket.handler(parser);
         });
-
 
         // 启动TCP服务器并监听指定端口
         server.listen(port, result -> {

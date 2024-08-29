@@ -29,37 +29,37 @@ public class ProtocolMessage<T> {
     public static class Header {
 
         /**
-         * 魔数，保证安全性
+         * 1.魔数，保证安全性
          */
         private byte magic;
 
         /**
-         * 版本号
+         * 2.版本号
          */
         private byte version;
 
         /**
-         * 序列化器
+         * 3.序列化器
          */
         private byte serializer;
 
         /**
-         * 消息类型（请求 / 响应）
+         * 4.消息类型（请求 / 响应）
          */
         private byte type;
 
         /**
-         * 状态
+         * 5.状态
          */
         private byte status;
 
         /**
-         * 请求 id
+         * 6.请求 id
          */
         private long requestId;
 
         /**
-         * 消息体长度
+         * 7.消息体长度
          */
         private int bodyLength;
     }
